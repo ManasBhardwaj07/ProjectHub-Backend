@@ -14,20 +14,35 @@ dotenv.config();
 const app = express();
 const server = http.createServer(app);
 
-// ✅ Socket.io setup with CORS
+// ✅ CORS setup for both local and Vercel
+const allowedOrigins = [
+  'http://localhost:5173',
+  'https://project-hub-frontend-mocha.vercel.app',
+];
+
+app.use(cors({
+  origin: allowedOrigins,
+  credentials: true,
+}));
+
+app.use(express.json());
+
+// ✅ Add default route to avoid "Cannot GET /"
+app.get('/', (req, res) => {
+  res.send('🚀 ProjectHub Backend is live');
+});
+
+// ✅ Socket.io setup with same CORS
 const io = new Server(server, {
   cors: {
-    origin: 'http://localhost:5173',
+    origin: allowedOrigins,
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
+    credentials: true,
   },
 });
 
-// ✅ Attach io to app for controller access
+// ✅ Attach socket.io instance to app for global access
 app.set('io', io);
-
-// ✅ Middlewares
-app.use(cors());
-app.use(express.json());
 
 // ✅ API Routes
 app.use('/api/auth', authRoutes);
@@ -38,28 +53,24 @@ app.use('/api', taskRoutes);
 io.on('connection', (socket) => {
   console.log(`🔌 Socket connected: ${socket.id}`);
 
-  // ✅ Project Events - broadcast to others
+  // Project Events
   socket.on('project:create', (project) => {
     socket.broadcast.emit('project:created', project);
   });
-
   socket.on('project:update', (project) => {
     socket.broadcast.emit('project:updated', project);
   });
-
   socket.on('project:delete', (projectId) => {
     socket.broadcast.emit('project:deleted', projectId);
   });
 
-  // ✅ Task Events - broadcast to others
+  // Task Events
   socket.on('task:create', (task) => {
     socket.broadcast.emit('task:created', task);
   });
-
   socket.on('task:update', (task) => {
     socket.broadcast.emit('task:updated', task);
   });
-
   socket.on('task:delete', (taskId) => {
     socket.broadcast.emit('task:deleted', taskId);
   });
@@ -69,8 +80,9 @@ io.on('connection', (socket) => {
   });
 });
 
-// ✅ Connect MongoDB and Start Server
+// ✅ Connect to MongoDB and start server
 const PORT = process.env.PORT || 5000;
+
 mongoose
   .connect(process.env.MONGO_URI)
   .then(() => {
