@@ -53,22 +53,8 @@ EMAIL_PASS=your_app_password
 FRONTEND_URL=http://localhost:5173
 ```
 
-### For **deployment (Render)**:
 
-```env
-PORT=10000
 
-MONGO_URI=mongodb+srv://rahul964554:TqwFS2m2vSdzSkBX@projecthub.hflpug8.mongodb.net/?retryWrites=true&w=majority&appName=ProjectHub
-
-JWT_SECRET=59bfe86bb7d1330927f203337098c3dc6429f94dfebb1e0a00af61dd26ad0a8a
-
-EMAIL_HOST=smtp.gmail.com
-EMAIL_PORT=587
-EMAIL_USER=rahul964554@gmail.com
-EMAIL_PASS=tpop jnhu bvqh jzsu
-
-FRONTEND_URL=https://project-hub-frontend-mocha.vercel.app
-```
 
 ---
 
