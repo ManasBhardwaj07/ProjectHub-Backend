@@ -1,5 +1,7 @@
 # 📦 ProjectHub – Backend
 
+🚀 **Live API Base URL:** [https://projecthub-backend-4mpw.onrender.com/api](https://projecthub-backend-4mpw.onrender.com/api)
+
 This is the **backend server** for **ProjectHub**, a powerful real-time collaboration platform built with the **MERN stack**, secured by **JWT Authentication**, and supports password resets via **Gmail SMTP**.
 
 ---
